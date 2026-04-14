@@ -1,0 +1,867 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes">
+    <title>xuyifei0302 · 兔兔的GitHub</title>
+    <!-- Font Awesome 图标库 -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <!-- 引入 Google Fonts 手写/文艺字体，仿博客园风格 -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Long+Cang&family=Caveat:wght@400;600&family=Quicksand:wght@400;500;600&display=swap" rel="stylesheet">
+    <style>
+        /* ----- 全局重置 & 变量 ----- */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        ::selection {
+            background: #807dd4;
+            color: #fff;
+        }
+
+        ::-webkit-scrollbar {
+            width: 4px;
+            height: 4px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #f9f9f9;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #aaa;
+            border-radius: 6px;
+        }
+
+        body {
+            background-color: #faf9f8;
+            color: #3A4145;
+            font-family: 'Quicksand', -apple-system, BlinkMacSystemFont, "Segoe UI", "Microsoft YaHei", sans-serif;
+            font-size: 14px;
+            line-height: 1.6;
+            font-feature-settings: 'kern' 1;
+            overflow-x: hidden;
+        }
+
+        a {
+            color: #5c8ec6;
+            text-decoration: none;
+            transition: color 0.2s ease;
+        }
+        a:hover {
+            color: #f60;
+            text-decoration: underline;
+        }
+
+        /* ----- 顶部导航 (浅色、轻盈) ----- */
+        .header {
+            background: rgba(255, 255, 255, 0.85);
+            backdrop-filter: blur(8px);
+            -webkit-backdrop-filter: blur(8px);
+            border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+            padding: 12px 24px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.02);
+            position: sticky;
+            top: 0;
+            z-index: 10;
+        }
+
+        .header-left {
+            display: flex;
+            align-items: center;
+            gap: 28px;
+        }
+
+        .github-logo {
+            font-size: 28px;
+            color: #2d2d2b;
+        }
+
+        .header-nav {
+            display: flex;
+            gap: 24px;
+            font-weight: 500;
+        }
+        .header-nav a {
+            color: #3A4145;
+            font-size: 15px;
+            letter-spacing: 0.3px;
+        }
+        .header-nav a:hover {
+            color: #5c8ec6;
+        }
+
+        .header-right {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+        }
+
+        .search-bar {
+            background: #fff;
+            border: 1px solid #e2e4e8;
+            border-radius: 30px;
+            padding: 5px 16px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            color: #8b949e;
+            box-shadow: inset 0 1px 3px rgba(0,0,0,0.02);
+        }
+        .search-bar i {
+            font-size: 14px;
+            color: #8b949e;
+        }
+        .search-bar input {
+            background: none;
+            border: none;
+            color: #3A4145;
+            outline: none;
+            width: 200px;
+            font-size: 14px;
+            font-family: inherit;
+        }
+        .search-bar input::placeholder {
+            color: #a3aab1;
+        }
+
+        .header-icons {
+            display: flex;
+            gap: 16px;
+            font-size: 18px;
+            color: #3A4145;
+        }
+        .avatar-small {
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            background: #eef0f6;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #5c8ec6;
+            font-weight bold;
+            border: 1px solid #fff;
+            box-shadow: 0 2px 6px rgba(0,0,0,0.05);
+        }
+
+        /* ----- 主容器 (仿博客园 #home 宽度) ----- */
+        .container {
+            max-width: 1000px;
+            width: 85%;
+            margin: 30px auto;
+            background: rgba(255,255,255,0.7);
+            backdrop-filter: blur(2px);
+            padding: 24px 28px 40px;
+            border-radius: 24px;
+            box-shadow: 0 10px 30px -8px rgba(0, 0, 0, 0.08), 0 0 0 1px rgba(0,0,0,0.02);
+            display: flex;
+            flex-wrap: wrap;
+            gap: 28px;
+        }
+
+        /* 左侧资料卡 —— 文艺卡片 */
+        .profile-sidebar {
+            flex: 0 0 270px;
+        }
+
+        .profile-card {
+            background: #ffffffd6;
+            backdrop-filter: blur(4px);
+            border-radius: 20px;
+            padding: 24px 18px;
+            box-shadow: 0 8px 18px -6px rgba(0, 0, 0, 0.05), 0 0 0 1px rgba(0,0,0,0.02);
+            border: 1px solid rgba(255,255,255,0.5);
+        }
+
+        .avatar-wrapper {
+            text-align: center;
+            margin-bottom: 16px;
+        }
+        .avatar {
+            width: 160px;
+            height: 160px;
+            border-radius: 50%;
+            margin: 0 auto;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border: 3px solid #ffeef4;
+            box-shadow: 0 12px 22px -8px rgba(200, 120, 150, 0.25);
+            transition: transform 0.25s ease;
+            overflow: hidden;  /* 确保图片圆角 */
+            background: #f0dde3; /* 后备背景 */
+        }
+        .avatar img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            display: block;
+        }
+        .avatar:hover {
+            transform: scale(1.02);
+        }
+
+        .profile-name {
+            font-family: 'Long Cang', cursive;
+            font-size: 38px;
+            font-weight: 400;
+            line-height: 1.2;
+            color: #2e3b4e;
+            text-align: center;
+            letter-spacing: 2px;
+            text-shadow: 0 2px 6px rgba(0,0,0,0.05);
+        }
+        .profile-login {
+            font-family: 'Caveat', cursive;
+            font-size: 22px;
+            color: #6a7a8e;
+            text-align: center;
+            margin-bottom: 12px;
+        }
+        .profile-bio {
+            font-family: 'Quicksand', sans-serif;
+            font-size: 15px;
+            color: #4e5b68;
+            text-align: center;
+            margin-bottom: 20px;
+            padding: 0 8px;
+        }
+
+        .follow-button {
+            display: inline-block;
+            width: 100%;
+            background: #ffffff;
+            border: 1px solid #dce1e8;
+            border-radius: 40px;
+            color: #3A4145;
+            font-weight: 500;
+            padding: 8px 16px;
+            font-size: 15px;
+            text-align: center;
+            margin-bottom: 22px;
+            transition: all 0.2s ease;
+            box-shadow: 0 2px 6px rgba(0,0,0,0.02);
+            cursor: default;
+            font-family: 'Quicksand', sans-serif;
+        }
+        .follow-button i {
+            margin-right: 6px;
+            color: #d66e8e;
+        }
+        .follow-button:hover {
+            background: #fdf5f8;
+            border-color: #d49eb3;
+            box-shadow: 0 8px 14px -8px rgba(200, 120, 150, 0.2);
+        }
+
+        .profile-details {
+            border-top: 1px dashed #d0d7de;
+            padding-top: 16px;
+            margin-top: 8px;
+        }
+        .detail-item {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 10px;
+            color: #4e5b68;
+            font-size: 14px;
+        }
+        .detail-item i {
+            width: 20px;
+            color: #b87b94;
+            font-size: 15px;
+        }
+
+        .follow-stats {
+            display: flex;
+            gap: 18px;
+            margin-top: 16px;
+            font-family: 'Caveat', cursive;
+            font-size: 18px;
+            color: #5f6c7a;
+        }
+        .follow-stats strong {
+            color: #2e3b4e;
+            font-weight: 600;
+            font-family: 'Quicksand', sans-serif;
+            font-size: 16px;
+        }
+
+        .org-section {
+            margin-top: 24px;
+            border-top: 1px dashed #d0d7de;
+            padding-top: 16px;
+        }
+        .org-title {
+            font-family: 'Long Cang', cursive;
+            font-size: 24px;
+            margin-bottom: 10px;
+            color: #3A4145;
+        }
+        .org-avatars {
+            display: flex;
+            gap: 10px;
+        }
+        .org-avatar {
+            width: 42px;
+            height: 42px;
+            border-radius: 12px;
+            background: #f2f0ed;
+            border: 1px solid #fff;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #b87b94;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.02);
+        }
+
+        /* 右侧主内容 */
+        .main-content {
+            flex: 1;
+            min-width: 0;
+        }
+
+        /* 标签页导航 */
+        .tabs {
+            display: flex;
+            border-bottom: 1px solid #e9e9e9;
+            margin-bottom: 24px;
+            gap: 28px;
+            padding-bottom: 8px;
+            font-family: 'Caveat', cursive;
+            font-size: 20px;
+        }
+        .tab {
+            color: #6f7e8f;
+            padding: 6px 0;
+            border-bottom: 2px solid transparent;
+            transition: 0.15s;
+            cursor: default;
+        }
+        .tab.active {
+            color: #2e3b4e;
+            border-bottom: 2px solid #f78166;
+            font-weight: 600;
+        }
+        .tab i {
+            margin-right: 6px;
+            opacity: 0.8;
+        }
+
+        /* 置顶仓库卡片 — 博客园风格卡片 */
+        .section-title {
+            font-family: 'Long Cang', cursive;
+            font-size: 28px;
+            font-weight: 400;
+            color: #2e3b4e;
+            margin-bottom: 16px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            letter-spacing: 1px;
+        }
+        .section-title i {
+            color: #b87b94;
+            font-size: 22px;
+        }
+
+        .pinned-repos {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 18px;
+            margin-bottom: 32px;
+        }
+
+        .repo-card {
+            background: #ffffffd9;
+            backdrop-filter: blur(2px);
+            border: 1px solid rgba(0,0,0,0.04);
+            border-radius: 18px;
+            padding: 20px 18px;
+            box-shadow: 0 6px 14px -6px rgba(0, 0, 0, 0.05);
+            transition: all 0.2s ease;
+            border-bottom: 2px solid transparent;
+        }
+        .repo-card:hover {
+            border-bottom-color: #e6b0c2;
+            box-shadow: 0 18px 24px -12px rgba(180, 100, 130, 0.15);
+            background: #ffffff;
+            transform: translateY(-2px);
+        }
+
+        .repo-header {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            margin-bottom: 8px;
+        }
+        .repo-header i {
+            color: #7f96aa;
+        }
+        .repo-name {
+            font-family: 'Caveat', cursive;
+            font-size: 22px;
+            font-weight: 600;
+            color: #2b5f8a;
+        }
+        .repo-visibility {
+            border: 1px solid #cfdbe8;
+            border-radius: 20px;
+            padding: 2px 10px;
+            font-size: 11px;
+            color: #6b7f94;
+            background: #f4f8fe;
+            margin-left: 8px;
+        }
+        .repo-description {
+            color: #4e6279;
+            font-size: 14px;
+            margin-bottom: 18px;
+            min-height: 42px;
+            font-family: 'Quicksand', sans-serif;
+        }
+        .repo-meta {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            font-size: 13px;
+            color: #6b7f94;
+        }
+        .repo-language {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+        .lang-dot {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            background-color: #f1e05a;
+        }
+        .lang-dot.python { background-color: #3572A5; }
+        .lang-dot.html { background-color: #e34c26; }
+        .lang-dot.cpp { background-color: #f34b7d; }
+
+        /* 贡献图 — 轻量风格 */
+        .contribution-section {
+            margin-top: 20px;
+        }
+        .contribution-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 14px;
+        }
+        .contribution-graph {
+            background: #ffffffc2;
+            backdrop-filter: blur(2px);
+            border: 1px solid #eceff3;
+            border-radius: 20px;
+            padding: 18px 16px;
+            overflow-x: auto;
+            box-shadow: inset 0 2px 4px rgba(0,0,0,0.01);
+        }
+        .graph-grid {
+            display: flex;
+            gap: 3px;
+            min-width: max-content;
+        }
+        .graph-week {
+            display: flex;
+            flex-direction: column;
+            gap: 3px;
+        }
+        .day-cell {
+            width: 11px;
+            height: 11px;
+            border-radius: 3px;
+            background-color: #edf0f5;
+            border: 1px solid rgba(0,0,0,0.02);
+        }
+        .day-cell.lvl-0 { background-color: #f0f3f7; }
+        .day-cell.lvl-1 { background-color: #c8e1cc; }
+        .day-cell.lvl-2 { background-color: #7fb07f; }
+        .day-cell.lvl-3 { background-color: #4a9e4a; }
+        .day-cell.lvl-4 { background-color: #2c7a2c; }
+
+        .graph-labels {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 10px;
+            color: #6f7e8f;
+            font-size: 12px;
+        }
+        .legend {
+            display: flex;
+            align-items: center;
+            gap: 4px;
+            margin-left: 16px;
+        }
+
+        /* 最近动态卡片 */
+        .activity-card {
+            background: #ffffffd6;
+            backdrop-filter: blur(2px);
+            border-radius: 18px;
+            padding: 16px 20px;
+            border: 1px solid #eceff3;
+            margin-top: 24px;
+        }
+        .activity-item {
+            display: flex;
+            gap: 14px;
+            padding: 12px 0;
+            border-bottom: 1px dashed #e2e8f0;
+        }
+        .activity-item:last-child {
+            border-bottom: none;
+        }
+        .activity-item i {
+            color: #b87b94;
+            font-size: 16px;
+            margin-top: 2px;
+        }
+
+        /* 页脚 */
+        .footer {
+            max-width: 1000px;
+            width: 85%;
+            margin: 20px auto 30px;
+            padding: 24px 0 12px;
+            border-top: 1px dashed #d0d7de;
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-between;
+            align-items: center;
+            color: #7a8b9c;
+            font-size: 13px;
+            font-family: 'Caveat', cursive;
+            font-size: 16px;
+        }
+        .footer-links {
+            display: flex;
+            gap: 20px;
+        }
+        .footer-links a {
+            color: #5c8ec6;
+        }
+
+        /* 响应式 */
+        @media (max-width: 800px) {
+            .container {
+                width: 92%;
+                padding: 16px;
+                flex-direction: column;
+            }
+            .profile-sidebar {
+                width: 100%;
+            }
+            .avatar {
+                width: 130px;
+                height: 130px;
+            }
+            .header-nav {
+                display: none;
+            }
+            .search-bar input {
+                width: 140px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .pinned-repos {
+                grid-template-columns: 1fr;
+            }
+            .profile-name {
+                font-size: 32px;
+            }
+        }
+
+        /* 博客园特有装饰 — 引用块样式等 */
+        blockquote {
+            border-left: 3px solid rgba(184, 123, 148, 0.7);
+            padding: 12px 18px;
+            background: #fdf8fa;
+            border-radius: 12px;
+            margin: 16px 0;
+            color: #3f5669;
+            font-style: italic;
+        }
+
+        .handwrite {
+            font-family: 'Long Cang', cursive;
+        }
+
+        .note-edit {
+            background: #f6f3f0;
+            border-radius: 16px;
+            padding: 12px 18px;
+            color: #4a617c;
+            border-left: 4px solid #d4a5b8;
+            margin-bottom: 22px;
+            font-size: 14px;
+        }
+    </style>
+</head>
+<body>
+
+<!-- 顶部导航 仿博客园轻盈感 -->
+<header class="header">
+    <div class="header-left">
+        <i class="fab fa-github github-logo"></i>
+        <div class="header-nav">
+            <a href="#">探索</a>
+            <a href="#">项目</a>
+            <a href="#">星标</a>
+            <a href="#">关于</a>
+        </div>
+    </div>
+    <div class="header-right">
+        <div class="search-bar">
+            <i class="fas fa-search"></i>
+            <input type="text" placeholder="搜索或跳转…">
+            <i class="fas fa-slash"></i>
+        </div>
+        <div class="header-icons">
+            <i class="far fa-bell"></i>
+            <i class="fas fa-plus"></i>
+            <div class="avatar-small">
+                <i class="fas fa-feather-alt"></i>
+            </div>
+        </div>
+    </div>
+</header>
+
+<!-- 主内容区 -->
+<div class="container">
+    <!-- 左侧：手写风格资料卡（徐逸非） -->
+    <aside class="profile-sidebar">
+        <div class="profile-card">
+            <div class="avatar-wrapper">
+                <!-- 二次元头像，直接使用洛谷图床链接 -->
+                <div class="avatar">
+                    <img src="https://cdn.luogu.com.cn/upload/image_hosting/6pa9bx57.png?x-oss-process=image/resize,m_lfit,h_170,w_225" alt="xuyifei0302 头像">
+                </div>
+            </div>
+            <div class="profile-name">徐逸非</div>
+            <div class="profile-login">@xuyifei0302</div>
+            <div class="profile-bio">
+                🐇 一只不善于表达的兔兔<br>
+                💻 信息学竞赛生 · 探索算法与星辰
+            </div>
+            <a class="follow-button" href="#"><i class="fas fa-seedling"></i> 关注</a>
+            
+            <div class="profile-details">
+                <div class="detail-item"><i class="fas fa-laptop-code"></i> <strong>OIer</strong> · C++/Python</div>
+                <div class="detail-item"><i class="fas fa-map-pin"></i> 中国重庆</div>
+                <div class="detail-item"><i class="fas fa-link"></i> <a href="#">xuyifei0302.space</a></div>
+                <div class="detail-item"><i class="fab fa-github"></i> <a href="#">github.com/xuyifei0302</a></div>
+            </div>
+
+            <div class="follow-stats">
+                <span><i class="fas fa-user-friends"></i> <strong>389</strong> 关注者</span>
+                <span>·</span>
+                <span><strong>27</strong> 关注中</span>
+            </div>
+        </div>
+
+        <div class="org-section">
+            <div class="org-title">✨ 团队 / 组织</div>
+            <div class="org-avatars">
+                <div class="org-avatar"><i class="fas fa-robot"></i></div>
+                <div class="org-avatar"><i class="fas fa-brain"></i></div>
+                <div class="org-avatar"><i class="fas fa-tree"></i></div>
+            </div>
+        </div>
+        <div style="margin-top: 16px; color: #7f8fa3; font-size: 14px; font-family: 'Caveat';">
+            <i class="far fa-calendar-alt"></i> 加入于 2022-11-29
+        </div>
+    </aside>
+
+    <!-- 右侧主要内容区 -->
+    <main class="main-content">
+        <div class="note-edit">
+            <i class="fas fa-paint-brush"></i> 兔兔的代码小窝 · 二次元风格 · 信息学竞赛生日常
+        </div>
+
+        <!-- 标签页 -->
+        <div class="tabs">
+            <div class="tab active"><i class="fas fa-feather-alt"></i> 概览</div>
+            <div class="tab"><i class="fas fa-code-branch"></i> 仓库 <span style="background:#eef2f7; padding:2px 10px; border-radius:30px; margin-left:6px;">18</span></div>
+            <div class="tab"><i class="fas fa-project-diagram"></i> 项目</div>
+            <div class="tab"><i class="far fa-star"></i> 星标</div>
+        </div>
+
+        <!-- 置顶仓库 Pinned (信息学相关) -->
+        <div class="section-title">
+            <i class="fas fa-thumbtack"></i> 置顶 · 竞赛仓库
+        </div>
+        <div class="pinned-repos">
+            <div class="repo-card">
+                <div class="repo-header">
+                    <i class="far fa-bookmark"></i>
+                    <a href="#" class="repo-name">Algo-Rabbit</a>
+                    <span class="repo-visibility">Public</span>
+                </div>
+                <div class="repo-description">
+                    🐇 算法竞赛模板 & 题解（线段树、图论、数论……）
+                </div>
+                <div class="repo-meta">
+                    <span class="repo-language"><span class="lang-dot cpp"></span> C++</span>
+                    <span><i class="far fa-star"></i> 128</span>
+                    <span><i class="fas fa-code-branch"></i> 23</span>
+                </div>
+            </div>
+            <div class="repo-card">
+                <div class="repo-header">
+                    <i class="far fa-bookmark"></i>
+                    <a href="#" class="repo-name">OI-note</a>
+                    <span class="repo-visibility">Public</span>
+                </div>
+                <div class="repo-description">
+                    📘 信息学笔记 · 从普及到提高，一些个人总结。
+                </div>
+                <div class="repo-meta">
+                    <span class="repo-language"><span class="lang-dot python"></span> Python / MD</span>
+                    <span><i class="far fa-star"></i> 307</span>
+                    <span><i class="fas fa-code-branch"></i> 41</span>
+                </div>
+            </div>
+            <div class="repo-card">
+                <div class="repo-header">
+                    <i class="far fa-bookmark"></i>
+                    <a href="#" class="repo-name">rabbit-judge</a>
+                    <span class="repo-visibility">Public</span>
+                </div>
+                <div class="repo-description">
+                    ⚖️ 简易在线评测玩具（OJ），练习用。
+                </div>
+                <div class="repo-meta">
+                    <span class="repo-language"><span class="lang-dot html"></span> HTML/JS</span>
+                    <span><i class="far fa-star"></i> 56</span>
+                    <span><i class="fas fa-code-branch"></i> 8</span>
+                </div>
+            </div>
+            <div class="repo-card">
+                <div class="repo-header">
+                    <i class="far fa-bookmark"></i>
+                    <a href="#" class="repo-name">dot-oi</a>
+                    <span class="repo-visibility">Public</span>
+                </div>
+                <div class="repo-description">
+                    🛠️ 我的开发环境配置 (neovim / vscode / 竞赛准备)
+                </div>
+                <div class="repo-meta">
+                    <span class="repo-language"><span class="lang-dot" style="background:#89e051;"></span> Lua</span>
+                    <span><i class="far fa-star"></i> 33</span>
+                    <span><i class="fas fa-code-branch"></i> 5</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- 贡献日历 (仿GitHub清新版) -->
+        <div class="contribution-section">
+            <div class="contribution-header">
+                <div class="section-title"><i class="fas fa-calendar-alt"></i> 297 次贡献 · 过去一年</div>
+                <span style="color:#7a8b9c;"><i class="fas fa-sliders-h"></i> 设置</span>
+            </div>
+            <div class="contribution-graph">
+                <div class="graph-grid" id="graphGrid"></div>
+                <div class="graph-labels">
+                    <span>4月</span><span>5月</span><span>6月</span><span>7月</span><span>8月</span><span>9月</span><span>10月</span><span>11月</span><span>12月</span><span>1月</span><span>2月</span><span>3月</span>
+                </div>
+                <div style="display: flex; justify-content: flex-end; margin-top: 8px;">
+                    <div class="legend">
+                        <span>少</span>
+                        <span class="day-cell lvl-0"></span>
+                        <span class="day-cell lvl-1"></span>
+                        <span class="day-cell lvl-2"></span>
+                        <span class="day-cell lvl-3"></span>
+                        <span class="day-cell lvl-4"></span>
+                        <span>多</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 最近动态 -->
+        <div class="activity-card">
+            <div style="font-family: 'Long Cang'; font-size: 26px; margin-bottom: 8px;"><i class="far fa-newspaper"></i> 兔兔动态</div>
+            <div class="activity-item">
+                <i class="fas fa-code-branch"></i>
+                <span><strong>xuyifei0302</strong> 更新题解 <code>P1001</code> 于 <a href="#">Algo-Rabbit</a> · 昨天</span>
+            </div>
+            <div class="activity-item">
+                <i class="fas fa-star" style="color:#e3b341;"></i>
+                <span><strong>OIer_X</strong> 星标了 <a href="#">OI-note</a> · 3天前</span>
+            </div>
+            <div class="activity-item">
+                <i class="fas fa-code"></i>
+                <span><strong>xuyifei0302</strong> 推送了线段树模板 · 5天前</span>
+            </div>
+        </div>
+        
+        <!-- 装饰引用 -->
+        <blockquote>
+            「 即使是不善言辞的兔子，也有想要传达的算法之美。」 —— 逸非
+        </blockquote>
+    </main>
+</div>
+
+<!-- 页脚 -->
+<footer class="footer">
+    <div style="display: flex; align-items: center; gap: 8px;">
+        <i class="fab fa-github" style="font-size: 22px; color:#7a8b9c;"></i>
+        <span>© 2026 徐逸非 · 兔兔的GitHub</span>
+    </div>
+    <div class="footer-links">
+        <a href="#">条款</a>
+        <a href="#">隐私</a>
+        <a href="#">安全</a>
+        <a href="#">状态</a>
+        <a href="#">文档</a>
+    </div>
+</footer>
+
+<script>
+    (function() {
+        // 生成贡献日历 (柔和色调)
+        const graphGrid = document.getElementById('graphGrid');
+        if (graphGrid) {
+            const weeks = 53;
+            const daysPerWeek = 7;
+            for (let w = 0; w < weeks; w++) {
+                const weekDiv = document.createElement('div');
+                weekDiv.className = 'graph-week';
+                for (let d = 0; d < daysPerWeek; d++) {
+                    const day = document.createElement('div');
+                    day.className = 'day-cell';
+                    const rand = Math.random();
+                    let level = 0;
+                    if (rand > 0.68) level = 1;
+                    if (rand > 0.82) level = 2;
+                    if (rand > 0.93) level = 3;
+                    if (rand > 0.98) level = 4;
+                    // 制造一些图案感
+                    if ((w * 3 + d) % 17 === 0) level = 3;
+                    if ((w * 5 + d) % 11 === 0) level = 4;
+                    day.classList.add(`lvl-${level}`);
+                    weekDiv.appendChild(day);
+                }
+                graphGrid.appendChild(weekDiv);
+            }
+        }
+    })();
+</script>
+
+<!-- 所有信息已按用户要求设置：头像链接、用户名 xuyifei0302、加入时间2022-11-29、位置中国重庆 -->
+</body>
+</html>
