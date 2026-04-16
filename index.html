@@ -20,6 +20,22 @@
         .header-nav a { color: #3A4145; font-size: 15px; }
         .search-bar { background: #fff; border: 1px solid #e2e4e8; border-radius: 30px; padding: 5px 16px; display: flex; align-items: center; gap: 8px; }
         .search-bar input { border: none; background: none; outline: none; width: 200px; }
+        /* 实时时钟样式 */
+        .live-clock {
+            font-family: 'Caveat', cursive;
+            font-size: 18px;
+            color: #3A4145;
+            background: rgba(255,255,240,0.5);
+            padding: 4px 14px;
+            border-radius: 30px;
+            border: 1px solid #eceff3;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            margin-right: 10px;
+        }
+        .live-clock i { color: #b87b94; }
+        .header-right { display: flex; align-items: center; gap: 16px; }
         .container { max-width: 1000px; width: 85%; margin: 30px auto; background: rgba(255,255,255,0.7); backdrop-filter: blur(2px); padding: 24px 28px 40px; border-radius: 24px; box-shadow: 0 10px 30px -8px rgba(0,0,0,0.08); display: flex; flex-wrap: wrap; gap: 28px; }
         .profile-sidebar { flex: 0 0 270px; }
         .profile-card { background: #ffffffd6; backdrop-filter: blur(4px); border-radius: 20px; padding: 24px 18px; box-shadow: 0 8px 18px -6px rgba(0,0,0,0.05); border: 1px solid rgba(255,255,255,0.5); }
@@ -28,9 +44,12 @@
         .profile-name { font-family: 'Long Cang', cursive; font-size: 38px; text-align: center; color: #2e3b4e; }
         .profile-login { font-family: 'Caveat', cursive; font-size: 22px; text-align: center; color: #6a7a8e; margin-bottom: 12px; }
         .profile-bio { text-align: center; margin: 16px 0; }
-        .btn { display: block; width: 100%; background: #fff; border: 1px solid #dce1e8; border-radius: 40px; padding: 8px; text-align: center; margin: 16px 0; transition: 0.2s; }
+        .btn { display: block; width: 100%; background: #fff; border: 1px solid #dce1e8; border-radius: 40px; padding: 8px; text-align: center; margin: 12px 0; transition: 0.2s; }
         .btn i { margin-right: 6px; color: #d66e8e; }
         .btn:hover { background: #fdf5f8; border-color: #d49eb3; }
+        .btn-xrcoi { background: #e8f0fe; border-color: #aac8e4; }
+        .btn-xrcoi i { color: #2b5f8a; }
+        .btn-xrcoi:hover { background: #d4e3f5; }
         .detail-item { display: flex; align-items: center; gap: 10px; margin: 10px 0; color: #4e5b68; }
         .detail-item i { width: 20px; color: #b87b94; }
         .oj-links { display: flex; gap: 8px; margin-top: 16px; flex-wrap: wrap; }
@@ -54,10 +73,10 @@
         .loading { text-align: center; padding: 30px; color: #8b9aab; }
         .error-block { background: #fff2f5; border-radius: 18px; padding: 16px; color: #d66e8e; }
         .footer { text-align: center; margin: 30px 0; color: #7a8b9c; font-family: 'Caveat', cursive; }
-        .retry-link { cursor: pointer; color: #5c8ec6; margin-left: 8px; }
         @media (max-width: 800px) {
             .container { flex-direction: column; width: 92%; padding: 16px; }
             .header-nav { display: none; }
+            .header-right { flex-wrap: wrap; }
         }
     </style>
 </head>
@@ -73,9 +92,16 @@
             <a href="#">关于</a>
         </div>
     </div>
-    <div class="search-bar">
-        <i class="fas fa-search"></i>
-        <input type="text" placeholder="搜索或跳转…">
+    <div class="header-right">
+        <div class="search-bar">
+            <i class="fas fa-search"></i>
+            <input type="text" placeholder="搜索或跳转…">
+        </div>
+        <!-- 实时时钟 -->
+        <div class="live-clock" id="liveClock">
+            <i class="far fa-clock"></i>
+            <span id="clockDisplay">2026-04-16 12:00:00</span>
+        </div>
     </div>
 </header>
 
@@ -92,17 +118,18 @@
                 🐇 一只不善于表达的兔兔<br>💻 信息学竞赛生
             </div>
             <a class="btn" href="https://github.com/xuyifei0302" target="_blank"><i class="fab fa-github"></i> GitHub 主页</a>
+            <!-- 新增 XRCOI 入口 -->
+            <a class="btn btn-xrcoi" href="https://xrcoi.mywwzh.top/" target="_blank"><i class="fas fa-robot"></i> XRCOI 训练平台</a>
             <div class="detail-item"><i class="fas fa-map-pin"></i> 中国重庆</div>
             <div class="detail-item"><i class="far fa-calendar-alt"></i> 加入于 2022-11-29</div>
             <div class="oj-links">
-                <!-- 保留洛谷跳转链接 -->
                 <a href="https://www.luogu.com.cn/user/1170113" target="_blank" class="oj-link"><i class="fas fa-code"></i> 洛谷</a>
                 <a href="https://www.cnblogs.com/xuyifei0302" target="_blank" class="oj-link"><i class="fas fa-pen-nib"></i> 博客园</a>
             </div>
         </div>
     </aside>
 
-    <!-- 右侧主内容（不再包含洛谷数据模块） -->
+    <!-- 右侧主内容 -->
     <main class="main-content">
         <div id="status-bar" class="status-bar">
             <i class="fas fa-sync-alt fa-spin"></i> 正在连接各平台...
@@ -123,7 +150,7 @@
 </div>
 
 <footer class="footer">
-    🐇 徐逸非 · 数据实时聚合自 GitHub / 博客园
+    🐇 徐逸非 · 数据实时聚合自 GitHub / 博客园 · <span id="footerClock"></span>
 </footer>
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.4/moment.min.js"></script>
@@ -135,6 +162,25 @@
         function setStatus(msg, isOk = true) {
             statusDiv.innerHTML = `<i class="fas fa-${isOk ? 'check-circle' : 'exclamation-triangle'}" style="color:${isOk?'#4a9e4a':'#d66e8e'};"></i> ${msg}`;
         }
+
+        // ---------- 实时时钟 ----------
+        function updateClock() {
+            const now = new Date();
+            const year = now.getFullYear();
+            const month = String(now.getMonth() + 1).padStart(2, '0');
+            const day = String(now.getDate()).padStart(2, '0');
+            const hours = String(now.getHours()).padStart(2, '0');
+            const minutes = String(now.getMinutes()).padStart(2, '0');
+            const seconds = String(now.getSeconds()).padStart(2, '0');
+            const timeString = `${year}-${month}-${day} ${hours}:${minutes}:${seconds}`;
+            const weekdays = ['星期日', '星期一', '星期二', '星期三', '星期四', '星期五', '星期六'];
+            const weekday = weekdays[now.getDay()];
+            document.getElementById('clockDisplay').textContent = timeString + ' ' + weekday;
+            const footerEl = document.getElementById('footerClock');
+            if (footerEl) footerEl.textContent = timeString + ' ' + weekday;
+        }
+        updateClock();
+        setInterval(updateClock, 1000);
 
         // ---------- GitHub 仓库 ----------
         async function fetchRepos() {
