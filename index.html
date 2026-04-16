@@ -13,29 +13,28 @@
         body { background: #faf9f8; color: #3A4145; font-family: 'Quicksand', sans-serif; font-size: 14px; line-height: 1.6; }
         a { color: #5c8ec6; text-decoration: none; transition: 0.2s; }
         a:hover { color: #f60; }
-        .header { background: rgba(255,255,255,0.85); backdrop-filter: blur(8px); padding: 12px 24px; display: flex; align-items: center; justify-content: space-between; border-bottom: 1px solid rgba(0,0,0,0.05); position: sticky; top: 0; z-index: 10; }
+        .header { background: rgba(255,255,255,0.85); backdrop-filter: blur(8px); padding: 12px 24px; display: flex; align-items: center; justify-content: space-between; border-bottom: 1px solid rgba(0,0,0,0.05); position: sticky; top: 0; z-index: 10; flex-wrap: wrap; }
         .header-left { display: flex; align-items: center; gap: 20px; }
         .github-logo { font-size: 28px; color: #2d2d2b; }
         .header-nav { display: flex; gap: 24px; }
         .header-nav a { color: #3A4145; font-size: 15px; }
         .search-bar { background: #fff; border: 1px solid #e2e4e8; border-radius: 30px; padding: 5px 16px; display: flex; align-items: center; gap: 8px; }
         .search-bar input { border: none; background: none; outline: none; width: 200px; }
-        /* 实时时钟样式 */
+        .header-right { display: flex; align-items: center; gap: 16px; }
         .live-clock {
             font-family: 'Caveat', cursive;
             font-size: 18px;
             color: #3A4145;
-            background: rgba(255,255,240,0.5);
+            background: rgba(255,255,240,0.6);
             padding: 4px 14px;
             border-radius: 30px;
             border: 1px solid #eceff3;
             display: flex;
             align-items: center;
             gap: 6px;
-            margin-right: 10px;
+            white-space: nowrap;
         }
         .live-clock i { color: #b87b94; }
-        .header-right { display: flex; align-items: center; gap: 16px; }
         .container { max-width: 1000px; width: 85%; margin: 30px auto; background: rgba(255,255,255,0.7); backdrop-filter: blur(2px); padding: 24px 28px 40px; border-radius: 24px; box-shadow: 0 10px 30px -8px rgba(0,0,0,0.08); display: flex; flex-wrap: wrap; gap: 28px; }
         .profile-sidebar { flex: 0 0 270px; }
         .profile-card { background: #ffffffd6; backdrop-filter: blur(4px); border-radius: 20px; padding: 24px 18px; box-shadow: 0 8px 18px -6px rgba(0,0,0,0.05); border: 1px solid rgba(255,255,255,0.5); }
@@ -45,8 +44,9 @@
         .profile-login { font-family: 'Caveat', cursive; font-size: 22px; text-align: center; color: #6a7a8e; margin-bottom: 12px; }
         .profile-bio { text-align: center; margin: 16px 0; }
         .btn { display: block; width: 100%; background: #fff; border: 1px solid #dce1e8; border-radius: 40px; padding: 8px; text-align: center; margin: 12px 0; transition: 0.2s; }
-        .btn i { margin-right: 6px; color: #d66e8e; }
-        .btn:hover { background: #fdf5f8; border-color: #d49eb3; }
+        .btn i { margin-right: 6px; }
+        .btn-github i { color: #d66e8e; }
+        .btn-github:hover { background: #fdf5f8; border-color: #d49eb3; }
         .btn-xrcoi { background: #e8f0fe; border-color: #aac8e4; }
         .btn-xrcoi i { color: #2b5f8a; }
         .btn-xrcoi:hover { background: #d4e3f5; }
@@ -69,6 +69,47 @@
         .blog-title { font-weight: 600; margin-bottom: 6px; }
         .blog-summary { font-size: 13px; color: #4e6279; margin: 8px 0; }
         .blog-meta { font-size: 12px; color: #6a7a8e; }
+        .calendar-card {
+            background: #ffffffd9;
+            border-radius: 18px;
+            padding: 16px;
+            border: 1px solid #eceff3;
+            margin-top: 24px;
+        }
+        .calendar-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 12px;
+            font-family: 'Caveat', cursive;
+            font-size: 20px;
+        }
+        .calendar-grid {
+            display: grid;
+            grid-template-columns: repeat(7, 1fr);
+            gap: 4px;
+            text-align: center;
+        }
+        .calendar-weekday {
+            font-size: 12px;
+            color: #8b9aab;
+            padding: 4px 0;
+        }
+        .calendar-day {
+            aspect-ratio: 1 / 1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 8px;
+            background: #f8f3f5;
+            font-size: 13px;
+            color: #4e5b68;
+        }
+        .calendar-day.today {
+            background: #b87b94;
+            color: white;
+            font-weight: 600;
+        }
         .status-bar { background: #f6f3f0; border-radius: 30px; padding: 8px 18px; margin-bottom: 20px; display: inline-block; }
         .loading { text-align: center; padding: 30px; color: #8b9aab; }
         .error-block { background: #fff2f5; border-radius: 18px; padding: 16px; color: #d66e8e; }
@@ -77,6 +118,7 @@
             .container { flex-direction: column; width: 92%; padding: 16px; }
             .header-nav { display: none; }
             .header-right { flex-wrap: wrap; }
+            .search-bar input { width: 140px; }
         }
     </style>
 </head>
@@ -97,7 +139,7 @@
             <i class="fas fa-search"></i>
             <input type="text" placeholder="搜索或跳转…">
         </div>
-        <!-- 实时时钟 -->
+        <!-- 实时时钟 - 修复显示 -->
         <div class="live-clock" id="liveClock">
             <i class="far fa-clock"></i>
             <span id="clockDisplay">2026-04-16 12:00:00</span>
@@ -117,14 +159,24 @@
             <div class="profile-bio">
                 🐇 一只不善于表达的兔兔<br>💻 信息学竞赛生
             </div>
-            <a class="btn" href="https://github.com/xuyifei0302" target="_blank"><i class="fab fa-github"></i> GitHub 主页</a>
-            <!-- 新增 XRCOI 入口 -->
+            <!-- GitHub 按钮 -->
+            <a class="btn btn-github" href="https://github.com/xuyifei0302" target="_blank"><i class="fab fa-github"></i> GitHub 主页</a>
+            <!-- XRCOI 入口 - 确保可见 -->
             <a class="btn btn-xrcoi" href="https://xrcoi.mywwzh.top/" target="_blank"><i class="fas fa-robot"></i> XRCOI 训练平台</a>
             <div class="detail-item"><i class="fas fa-map-pin"></i> 中国重庆</div>
             <div class="detail-item"><i class="far fa-calendar-alt"></i> 加入于 2022-11-29</div>
             <div class="oj-links">
                 <a href="https://www.luogu.com.cn/user/1170113" target="_blank" class="oj-link"><i class="fas fa-code"></i> 洛谷</a>
                 <a href="https://www.cnblogs.com/xuyifei0302" target="_blank" class="oj-link"><i class="fas fa-pen-nib"></i> 博客园</a>
+            </div>
+        </div>
+        <!-- 日历卡片 (当月日历) -->
+        <div class="calendar-card">
+            <div class="calendar-header">
+                <span id="calendar-month-year"></span>
+            </div>
+            <div class="calendar-grid" id="calendar-grid">
+                <!-- 由JS动态生成 -->
             </div>
         </div>
     </aside>
@@ -163,7 +215,7 @@
             statusDiv.innerHTML = `<i class="fas fa-${isOk ? 'check-circle' : 'exclamation-triangle'}" style="color:${isOk?'#4a9e4a':'#d66e8e'};"></i> ${msg}`;
         }
 
-        // ---------- 实时时钟 ----------
+        // ---------- 实时时钟 (修复显示) ----------
         function updateClock() {
             const now = new Date();
             const year = now.getFullYear();
@@ -172,15 +224,59 @@
             const hours = String(now.getHours()).padStart(2, '0');
             const minutes = String(now.getMinutes()).padStart(2, '0');
             const seconds = String(now.getSeconds()).padStart(2, '0');
-            const timeString = `${year}-${month}-${day} ${hours}:${minutes}:${seconds}`;
             const weekdays = ['星期日', '星期一', '星期二', '星期三', '星期四', '星期五', '星期六'];
             const weekday = weekdays[now.getDay()];
-            document.getElementById('clockDisplay').textContent = timeString + ' ' + weekday;
-            const footerEl = document.getElementById('footerClock');
-            if (footerEl) footerEl.textContent = timeString + ' ' + weekday;
+            const timeString = `${year}-${month}-${day} ${hours}:${minutes}:${seconds} ${weekday}`;
+            const clockSpan = document.getElementById('clockDisplay');
+            if (clockSpan) clockSpan.textContent = timeString;
+            const footerSpan = document.getElementById('footerClock');
+            if (footerSpan) footerSpan.textContent = timeString;
         }
         updateClock();
         setInterval(updateClock, 1000);
+
+        // ---------- 日历生成 (当月) ----------
+        function renderCalendar() {
+            const now = new Date();
+            const year = now.getFullYear();
+            const month = now.getMonth(); // 0-11
+            const firstDay = new Date(year, month, 1).getDay(); // 0=周日
+            const daysInMonth = new Date(year, month + 1, 0).getDate();
+            
+            const monthNames = ['一月', '二月', '三月', '四月', '五月', '六月', '七月', '八月', '九月', '十月', '十一月', '十二月'];
+            document.getElementById('calendar-month-year').textContent = `${year}年 ${monthNames[month]}`;
+            
+            const grid = document.getElementById('calendar-grid');
+            grid.innerHTML = '';
+            const weekdays = ['日', '一', '二', '三', '四', '五', '六'];
+            weekdays.forEach(wd => {
+                const dayDiv = document.createElement('div');
+                dayDiv.className = 'calendar-weekday';
+                dayDiv.textContent = wd;
+                grid.appendChild(dayDiv);
+            });
+            
+            // 填充空白
+            for (let i = 0; i < firstDay; i++) {
+                const empty = document.createElement('div');
+                empty.className = 'calendar-day';
+                empty.style.background = 'transparent';
+                grid.appendChild(empty);
+            }
+            
+            // 填充日期
+            const today = now.getDate();
+            for (let d = 1; d <= daysInMonth; d++) {
+                const dayDiv = document.createElement('div');
+                dayDiv.className = 'calendar-day';
+                dayDiv.textContent = d;
+                if (d === today && month === now.getMonth() && year === now.getFullYear()) {
+                    dayDiv.classList.add('today');
+                }
+                grid.appendChild(dayDiv);
+            }
+        }
+        renderCalendar();
 
         // ---------- GitHub 仓库 ----------
         async function fetchRepos() {
