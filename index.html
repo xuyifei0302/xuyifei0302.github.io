@@ -50,8 +50,6 @@
         .blog-title { font-weight: 600; margin-bottom: 6px; }
         .blog-summary { font-size: 13px; color: #4e6279; margin: 8px 0; }
         .blog-meta { font-size: 12px; color: #6a7a8e; }
-        .luogu-card { text-align: center; background: #ffffffd9; border-radius: 20px; padding: 16px; border: 1px solid #eceff3; }
-        .luogu-card img { max-width: 100%; border-radius: 16px; }
         .status-bar { background: #f6f3f0; border-radius: 30px; padding: 8px 18px; margin-bottom: 20px; display: inline-block; }
         .loading { text-align: center; padding: 30px; color: #8b9aab; }
         .error-block { background: #fff2f5; border-radius: 18px; padding: 16px; color: #d66e8e; }
@@ -97,13 +95,14 @@
             <div class="detail-item"><i class="fas fa-map-pin"></i> 中国重庆</div>
             <div class="detail-item"><i class="far fa-calendar-alt"></i> 加入于 2022-11-29</div>
             <div class="oj-links">
+                <!-- 保留洛谷跳转链接 -->
                 <a href="https://www.luogu.com.cn/user/1170113" target="_blank" class="oj-link"><i class="fas fa-code"></i> 洛谷</a>
                 <a href="https://www.cnblogs.com/xuyifei0302" target="_blank" class="oj-link"><i class="fas fa-pen-nib"></i> 博客园</a>
             </div>
         </div>
     </aside>
 
-    <!-- 右侧主内容 -->
+    <!-- 右侧主内容（不再包含洛谷数据模块） -->
     <main class="main-content">
         <div id="status-bar" class="status-bar">
             <i class="fas fa-sync-alt fa-spin"></i> 正在连接各平台...
@@ -117,15 +116,6 @@
         <div class="section-title"><i class="fas fa-pencil-alt"></i> 博客园 · 最新随笔 <span style="font-size:14px; margin-left:12px;"><a href="#" id="refresh-blog"><i class="fas fa-redo-alt"></i> 刷新</a></span></div>
         <div id="blog-container"><div class="loading">加载中...</div></div>
 
-        <!-- 洛谷练习数据 (图片卡片) -->
-        <div class="section-title"><i class="fas fa-chart-line"></i> 洛谷练习数据</div>
-        <div id="luogu-container">
-            <div class="luogu-card">
-                <img src="https://luogu-card.vercel.app/about?id=1170113" alt="洛谷练习数据" onerror="this.onerror=null; this.src='data:image/svg+xml,%3Csvg xmlns=\'http://www.w3.org/2000/svg\' width=\'400\' height=\'120\'%3E%3Crect width=\'400\' height=\'120\' fill=\'%23f8f3f5\' rx=\'16\'/%3E%3Ctext x=\'20\' y=\'50\' font-family=\'sans-serif\' fill=\'%23b87b94\'%3E洛谷数据加载失败%3C/text%3E%3Ctext x=\'20\' y=\'80\' font-family=\'sans-serif\' fill=\'%235c8ec6\'%3E点击访问洛谷主页 →%3C/text%3E%3C/svg%3E'; this.style.cursor='pointer'; this.onclick=function(){window.open('https://www.luogu.com.cn/user/1170113','_blank');};">
-                <p style="margin-top: 12px;"><a href="https://www.luogu.com.cn/user/1170113" target="_blank">在洛谷查看完整信息 <i class="fas fa-external-link-alt"></i></a></p>
-            </div>
-        </div>
-
         <!-- GitHub 动态 -->
         <div class="section-title"><i class="far fa-newspaper"></i> 最近动态 <span style="font-size:14px; margin-left:12px;"><a href="#" id="refresh-events"><i class="fas fa-redo-alt"></i> 刷新</a></span></div>
         <div id="events-container"><div class="loading">加载中...</div></div>
@@ -133,7 +123,7 @@
 </div>
 
 <footer class="footer">
-    🐇 徐逸非 · 数据实时聚合自 GitHub / 博客园 / 洛谷
+    🐇 徐逸非 · 数据实时聚合自 GitHub / 博客园
 </footer>
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.4/moment.min.js"></script>
