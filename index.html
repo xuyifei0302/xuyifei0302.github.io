@@ -1,6 +1,210 @@
-// ---------- 洛谷数据（优化版：图片卡片备选） ----------
-async function fetchLuogu() {
-    const container = document.getElementById('luogu-container');
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes">
+    <title>xuyifei0302 · 兔兔的GitHub</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Long+Cang&family=Caveat:wght@400;600&family=Quicksand:wght@400;500;600&display=swap" rel="stylesheet">
+    <style>
+        /* 样式与之前基本一致，略作精简以突出核心功能 */
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { background: #faf9f8; color: #3A4145; font-family: 'Quicksand', sans-serif; font-size: 14px; line-height: 1.6; }
+        a { color: #5c8ec6; text-decoration: none; }
+        a:hover { color: #f60; }
+        .header { background: rgba(255,255,255,0.85); backdrop-filter: blur(8px); padding: 12px 24px; display: flex; align-items: center; justify-content: space-between; border-bottom: 1px solid rgba(0,0,0,0.05); position: sticky; top: 0; z-index: 10; }
+        .container { max-width: 1000px; width: 85%; margin: 30px auto; background: rgba(255,255,255,0.7); backdrop-filter: blur(2px); padding: 24px 28px 40px; border-radius: 24px; box-shadow: 0 10px 30px -8px rgba(0,0,0,0.08); display: flex; flex-wrap: wrap; gap: 28px; }
+        .profile-sidebar { flex: 0 0 270px; }
+        .profile-card { background: #ffffffd6; border-radius: 20px; padding: 24px 18px; box-shadow: 0 8px 18px -6px rgba(0,0,0,0.05); }
+        .avatar { width: 160px; height: 160px; border-radius: 50%; margin: 0 auto; border: 3px solid #ffeef4; overflow: hidden; }
+        .avatar img { width: 100%; height: 100%; object-fit: cover; }
+        .profile-name { font-family: 'Long Cang', cursive; font-size: 38px; text-align: center; color: #2e3b4e; }
+        .profile-login { font-family: 'Caveat', cursive; font-size: 22px; text-align: center; color: #6a7a8e; }
+        .profile-bio { text-align: center; margin: 12px 0; }
+        .btn { display: block; width: 100%; background: #fff; border: 1px solid #dce1e8; border-radius: 40px; padding: 8px; text-align: center; margin: 16px 0; transition: 0.2s; }
+        .btn:hover { background: #fdf5f8; border-color: #d49eb3; }
+        .detail-item { display: flex; gap: 10px; margin: 10px 0; color: #4e5b68; }
+        .section-title { font-family: 'Long Cang', cursive; font-size: 28px; margin: 20px 0 12px; }
+        .repo-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: 16px; }
+        .repo-card { background: #fff; border-radius: 18px; padding: 16px; box-shadow: 0 4px 12px rgba(0,0,0,0.04); }
+        .blog-card, .activity-card { background: #fff; border-radius: 18px; padding: 16px; margin-bottom: 12px; border: 1px solid #eceff3; }
+        .error-block { background: #fff2f5; border-radius: 18px; padding: 16px; color: #d66e8e; }
+        .loading { text-align: center; padding: 20px; color: #8b9aab; }
+        .footer { text-align: center; margin: 30px 0; color: #7a8b9c; }
+        .retry-btn { cursor: pointer; color: #5c8ec6; margin-left: 8px; }
+        @media (max-width: 800px) { .container { flex-direction: column; } }
+    </style>
+</head>
+<body>
+
+<header class="header">
+    <div><i class="fab fa-github"></i> <span style="font-weight:600;">xuyifei0302</span></div>
+    <div><i class="fas fa-search"></i> <input type="text" placeholder="搜索..." style="border:none; background:transparent; outline:none;"></div>
+</header>
+
+<div class="container">
+    <aside class="profile-sidebar">
+        <div class="profile-card">
+            <div class="avatar">
+                <img src="https://cdn.luogu.com.cn/upload/image_hosting/6pa9bx57.png?x-oss-process=image/resize,m_lfit,h_170,w_225" alt="avatar">
+            </div>
+            <div class="profile-name">徐逸非</div>
+            <div class="profile-login">@xuyifei0302</div>
+            <div class="profile-bio">🐇 一只不善于表达的兔兔<br>💻 信息学竞赛生</div>
+            <a class="btn" href="https://github.com/xuyifei0302" target="_blank"><i class="fab fa-github"></i> GitHub</a>
+            <div class="detail-item"><i class="fas fa-map-pin"></i> 中国重庆</div>
+            <div class="detail-item"><i class="fas fa-calendar"></i> 加入 2022-11-29</div>
+            <div style="margin-top:16px;">
+                <a href="https://www.luogu.com.cn/user/1170113" target="_blank" style="margin-right:12px;"><i class="fas fa-code"></i> 洛谷</a>
+                <a href="https://www.cnblogs.com/xuyifei0302" target="_blank"><i class="fas fa-pen-nib"></i> 博客园</a>
+            </div>
+        </div>
+    </aside>
+
+    <main style="flex:1;">
+        <!-- 状态栏 -->
+        <div id="status-bar" class="loading"><i class="fas fa-sync-alt fa-spin"></i> 正在连接各平台...</div>
+
+        <!-- GitHub 仓库 -->
+        <div class="section-title"><i class="fas fa-code-branch"></i> 热门仓库</div>
+        <div id="repos-container" class="repo-grid"><div class="loading">加载中...</div></div>
+
+        <!-- 博客园文章 -->
+        <div class="section-title"><i class="fas fa-pencil-alt"></i> 博客园最新 <span style="font-size:14px; margin-left:10px;"><a href="#" id="refresh-blog"><i class="fas fa-redo-alt"></i> 刷新</a></span></div>
+        <div id="blog-container"><div class="loading">加载中...</div></div>
+
+        <!-- 洛谷数据 -->
+        <div class="section-title"><i class="fas fa-chart-line"></i> 洛谷练习</div>
+        <div id="luogu-container"><div class="loading">加载中...</div></div>
+
+        <!-- GitHub 动态 -->
+        <div class="section-title"><i class="far fa-newspaper"></i> 最近动态</div>
+        <div id="events-container"><div class="loading">加载中...</div></div>
+    </main>
+</div>
+
+<footer class="footer">🐇 徐逸非 · 数据实时聚合</footer>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.4/moment.min.js"></script>
+<script>
+    (function(){
+        const username = 'xuyifei0302';
+        const luoguUid = '1170113';
+        const statusDiv = document.getElementById('status-bar');
+
+        function setStatus(msg, isOk = true) {
+            statusDiv.innerHTML = `<i class="fas fa-${isOk ? 'check-circle' : 'exclamation-triangle'}" style="color:${isOk?'#4a9e4a':'#d66e8e'};"></i> ${msg}`;
+        }
+
+        // ---------- GitHub 用户信息 (仅用于显示仓库数量等) ----------
+        async function fetchGitHubUser() {
+            try {
+                const res = await fetch(`https://api.github.com/users/${username}`);
+                if (!res.ok) throw new Error('GitHub 用户获取失败');
+                const data = await res.json();
+                // 可在此更新粉丝数等，但为了简洁不处理
+            } catch(e) { console.warn(e); }
+        }
+
+        // ---------- GitHub 仓库 ----------
+        async function fetchRepos() {
+            const container = document.getElementById('repos-container');
+            try {
+                const res = await fetch(`https://api.github.com/users/${username}/repos?sort=stars&per_page=100`);
+                if (!res.ok) throw new Error('仓库获取失败');
+                const repos = await res.json();
+                const topRepos = repos.filter(r => !r.fork).slice(0, 4);
+                if (topRepos.length === 0) { container.innerHTML = '<div class="loading">暂无原创仓库</div>'; return; }
+                container.innerHTML = topRepos.map(repo => `
+                    <div class="repo-card">
+                        <div><i class="far fa-bookmark"></i> <a href="${repo.html_url}" target="_blank"><strong>${repo.name}</strong></a></div>
+                        <div style="font-size:13px; margin:8px 0; color:#4e6279;">${repo.description || '暂无描述'}</div>
+                        <div style="display:flex; gap:12px; font-size:12px; color:#6b7f94;">
+                            <span><span class="lang-dot" style="display:inline-block; width:10px; height:10px; border-radius:50%; background:#f1e05a;"></span> ${repo.language || 'Unknown'}</span>
+                            <span><i class="far fa-star"></i> ${repo.stargazers_count}</span>
+                            <span><i class="fas fa-code-branch"></i> ${repo.forks_count}</span>
+                        </div>
+                    </div>
+                `).join('');
+            } catch(e) {
+                container.innerHTML = '<div class="error-block">仓库加载失败，请稍后重试</div>';
+            }
+        }
+
+        // ---------- GitHub 事件 ----------
+        async function fetchEvents() {
+            const container = document.getElementById('events-container');
+            try {
+                const res = await fetch(`https://api.github.com/users/${username}/events?per_page=5`);
+                if (!res.ok) throw new Error('事件获取失败');
+                const events = await res.json();
+                if (events.length === 0) { container.innerHTML = '<div class="loading">暂无动态</div>'; return; }
+                container.innerHTML = events.slice(0,5).map(event => {
+                    const repo = event.repo.name;
+                    const repoUrl = `https://github.com/${repo}`;
+                    let icon = 'fa-code', text = '';
+                    switch(event.type) {
+                        case 'PushEvent': icon='fa-code-branch'; text='推送了代码'; break;
+                        case 'CreateEvent': icon='fa-plus-circle'; text=`创建了 ${event.payload.ref_type}`; break;
+                        case 'WatchEvent': icon='fa-star'; text='星标了'; break;
+                        case 'ForkEvent': icon='fa-code-branch'; text='Fork了'; break;
+                        default: icon='fa-history'; text='有活动';
+                    }
+                    return `<div class="activity-card"><i class="fas ${icon}"></i> <strong>${username}</strong> ${text} 于 <a href="${repoUrl}" target="_blank">${repo}</a> · ${moment(event.created_at).fromNow()}</div>`;
+                }).join('');
+            } catch(e) {
+                container.innerHTML = '<div class="error-block">动态加载失败</div>';
+            }
+        }
+
+        // ---------- 博客园文章 (带备用 rss2json) ----------
+        async function fetchBlog(useBackup = false) {
+            const container = document.getElementById('blog-container');
+            container.innerHTML = '<div class="loading"><i class="fas fa-spinner fa-spin"></i> 加载文章中...</div>';
+            const rssUrl = `https://www.cnblogs.com/xuyifei0302/rss`;
+            // 两个可用的 rss2json 服务
+            const services = [
+                `https://api.rss2json.com/v1/api.json?rss_url=${encodeURIComponent(rssUrl)}`,
+                `https://rss2json.nomadcoders.workers.dev/?url=${encodeURIComponent(rssUrl)}` // 备用
+            ];
+            const selected = useBackup ? services[1] : services[0];
+            try {
+                const res = await fetch(selected);
+                if (!res.ok) throw new Error('RSS服务异常');
+                const data = await res.json();
+                if (data.status !== 'ok' && !data.items) throw new Error('解析失败');
+                const items = data.items.slice(0, 5);
+                if (items.length === 0) { container.innerHTML = '<div class="loading">暂无文章</div>'; return; }
+                container.innerHTML = items.map(item => {
+                    const pubDate = moment(item.pubDate).format('YYYY-MM-DD');
+                    const summary = (item.description || '').replace(/<[^>]*>/g, '').slice(0, 100) + '...';
+                    return `<div class="blog-card">
+                        <a href="${item.link}" target="_blank"><strong>${item.title}</strong></a>
+                        <div style="font-size:13px; margin:8px 0; color:#4e6279;">${summary}</div>
+                        <div style="font-size:12px; color:#6a7a8e;"><i class="far fa-calendar"></i> ${pubDate}</div>
+                    </div>`;
+                }).join('');
+            } catch(e) {
+                if (!useBackup) {
+                    // 尝试备用服务
+                    return fetchBlog(true);
+                } else {
+                    container.innerHTML = `<div class="error-block">博客园文章加载失败，<a href="https://www.cnblogs.com/xuyifei0302" target="_blank">直接访问</a> 或 <a href="#" id="retry-blog">重试</a></div>`;
+                    document.getElementById('retry-blog')?.addEventListener('click', (e) => { e.preventDefault(); fetchBlog(false); });
+                }
+            }
+        }
+
+        // 刷新博客按钮
+        document.getElementById('refresh-blog')?.addEventListener('click', (e) => {
+            e.preventDefault();
+            fetchBlog(false);
+        });
+
+        // ---------- 洛谷数据 (多代理备选) ----------
+        // ---------- 洛谷数据（优化版：图片卡片备选） ----------
+        async function fetchLuogu() {
+            const container = document.getElementById('luogu-container');
     // 显示加载中
     container.innerHTML = '<div class="loading"><i class="fas fa-spinner fa-spin"></i> 正在连接洛谷...</div>';
 
@@ -41,3 +245,25 @@ async function fetchLuogu() {
         `;
     }
 }
+
+        // 初始化
+        async function init() {
+            setStatus('正在获取 GitHub 信息...');
+            await fetchGitHubUser();
+            await fetchRepos();
+            await fetchEvents();
+            setStatus('正在获取博客园文章...');
+            await fetchBlog();
+            setStatus('正在获取洛谷数据...');
+            await fetchLuogu();
+            setStatus('所有数据加载完成 ✨', true);
+        }
+
+        init().catch(e => { setStatus('部分数据加载失败，可尝试刷新', false); console.error(e); });
+
+        // 手动重试按钮全局
+        window.retryAll = init;
+    })();
+</script>
+</body>
+</html>
