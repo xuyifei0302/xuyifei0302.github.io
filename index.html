@@ -1,0 +1,616 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes">
+    <title>xuyifei0302 · 兔兔的GitHub (实时)</title>
+    <!-- Font Awesome 图标库 -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <!-- 引入 Google Fonts 手写/文艺字体 -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Long+Cang&family=Caveat:wght@400;600&family=Quicksand:wght@400;500;600&display=swap" rel="stylesheet">
+    <style>
+        /* ========== 全局样式 ========== */
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        ::selection { background: #807dd4; color: #fff; }
+        ::-webkit-scrollbar { width: 4px; height: 4px; }
+        ::-webkit-scrollbar-track { background: #f9f9f9; }
+        ::-webkit-scrollbar-thumb { background: #aaa; border-radius: 6px; }
+        body {
+            background-color: #faf9f8;
+            color: #3A4145;
+            font-family: 'Quicksand', -apple-system, BlinkMacSystemFont, "Segoe UI", "Microsoft YaHei", sans-serif;
+            font-size: 14px;
+            line-height: 1.6;
+            font-feature-settings: 'kern' 1;
+            overflow-x: hidden;
+        }
+        a { color: #5c8ec6; text-decoration: none; transition: color 0.2s ease; }
+        a:hover { color: #f60; text-decoration: underline; }
+        .header {
+            background: rgba(255, 255, 255, 0.85);
+            backdrop-filter: blur(8px);
+            -webkit-backdrop-filter: blur(8px);
+            border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+            padding: 12px 24px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.02);
+            position: sticky;
+            top: 0;
+            z-index: 10;
+        }
+        .header-left { display: flex; align-items: center; gap: 28px; }
+        .github-logo { font-size: 28px; color: #2d2d2b; }
+        .header-nav { display: flex; gap: 24px; font-weight: 500; }
+        .header-nav a { color: #3A4145; font-size: 15px; }
+        .header-nav a:hover { color: #5c8ec6; }
+        .header-right { display: flex; align-items: center; gap: 20px; }
+        .search-bar {
+            background: #fff; border: 1px solid #e2e4e8; border-radius: 30px; padding: 5px 16px;
+            display: flex; align-items: center; gap: 8px; color: #8b949e;
+            box-shadow: inset 0 1px 3px rgba(0,0,0,0.02);
+        }
+        .search-bar input { background: none; border: none; color: #3A4145; outline: none; width: 200px; font-size: 14px; }
+        .search-bar input::placeholder { color: #a3aab1; }
+        .header-icons { display: flex; gap: 16px; font-size: 18px; color: #3A4145; }
+        .avatar-small {
+            width: 30px; height: 30px; border-radius: 50%; background: #eef0f6;
+            display: flex; align-items: center; justify-content: center; color: #5c8ec6;
+            border: 1px solid #fff; box-shadow: 0 2px 6px rgba(0,0,0,0.05);
+        }
+        .container {
+            max-width: 1000px; width: 85%; margin: 30px auto;
+            background: rgba(255,255,255,0.7); backdrop-filter: blur(2px);
+            padding: 24px 28px 40px; border-radius: 24px;
+            box-shadow: 0 10px 30px -8px rgba(0, 0, 0, 0.08), 0 0 0 1px rgba(0,0,0,0.02);
+            display: flex; flex-wrap: wrap; gap: 28px;
+        }
+        .profile-sidebar { flex: 0 0 270px; }
+        .profile-card {
+            background: #ffffffd6; backdrop-filter: blur(4px); border-radius: 20px; padding: 24px 18px;
+            box-shadow: 0 8px 18px -6px rgba(0, 0, 0, 0.05), 0 0 0 1px rgba(0,0,0,0.02);
+            border: 1px solid rgba(255,255,255,0.5);
+        }
+        .avatar-wrapper { text-align: center; margin-bottom: 16px; }
+        .avatar {
+            width: 160px; height: 160px; border-radius: 50%; margin: 0 auto;
+            display: flex; align-items: center; justify-content: center;
+            border: 3px solid #ffeef4; box-shadow: 0 12px 22px -8px rgba(200, 120, 150, 0.25);
+            transition: transform 0.25s ease; overflow: hidden; background: #f0dde3;
+        }
+        .avatar img { width: 100%; height: 100%; object-fit: cover; display: block; }
+        .avatar:hover { transform: scale(1.02); }
+        .profile-name {
+            font-family: 'Long Cang', cursive; font-size: 38px; font-weight: 400;
+            color: #2e3b4e; text-align: center; letter-spacing: 2px;
+            text-shadow: 0 2px 6px rgba(0,0,0,0.05);
+        }
+        .profile-login {
+            font-family: 'Caveat', cursive; font-size: 22px; color: #6a7a8e;
+            text-align: center; margin-bottom: 12px;
+        }
+        .profile-bio {
+            font-family: 'Quicksand', sans-serif; font-size: 15px; color: #4e5b68;
+            text-align: center; margin-bottom: 20px; padding: 0 8px;
+        }
+        .follow-button {
+            display: inline-block; width: 100%; background: #ffffff; border: 1px solid #dce1e8;
+            border-radius: 40px; color: #3A4145; font-weight: 500; padding: 8px 16px;
+            font-size: 15px; text-align: center; margin-bottom: 22px; transition: all 0.2s ease;
+            box-shadow: 0 2px 6px rgba(0,0,0,0.02); cursor: pointer;
+        }
+        .follow-button i { margin-right: 6px; color: #d66e8e; }
+        .follow-button:hover { background: #fdf5f8; border-color: #d49eb3; box-shadow: 0 8px 14px -8px rgba(200, 120, 150, 0.2); }
+        .profile-details { border-top: 1px dashed #d0d7de; padding-top: 16px; margin-top: 8px; }
+        .detail-item { display: flex; align-items: center; gap: 10px; margin-bottom: 10px; color: #4e5b68; font-size: 14px; }
+        .detail-item i { width: 20px; color: #b87b94; }
+        .follow-stats { display: flex; gap: 18px; margin-top: 16px; font-family: 'Caveat', cursive; font-size: 18px; color: #5f6c7a; }
+        .follow-stats strong { color: #2e3b4e; font-weight: 600; font-family: 'Quicksand', sans-serif; font-size: 16px; }
+        .org-section { margin-top: 24px; border-top: 1px dashed #d0d7de; padding-top: 16px; }
+        .org-title { font-family: 'Long Cang', cursive; font-size: 24px; margin-bottom: 10px; color: #3A4145; }
+        .org-avatars { display: flex; gap: 10px; }
+        .org-avatar {
+            width: 42px; height: 42px; border-radius: 12px; background: #f2f0ed;
+            border: 1px solid #fff; display: flex; align-items: center; justify-content: center;
+            color: #b87b94; box-shadow: 0 4px 8px rgba(0,0,0,0.02);
+        }
+        .main-content { flex: 1; min-width: 0; }
+        .tabs {
+            display: flex; border-bottom: 1px solid #e9e9e9; margin-bottom: 24px;
+            gap: 28px; padding-bottom: 8px; font-family: 'Caveat', cursive; font-size: 20px;
+        }
+        .tab {
+            color: #6f7e8f; padding: 6px 0; border-bottom: 2px solid transparent;
+            transition: 0.15s; cursor: default;
+        }
+        .tab.active { color: #2e3b4e; border-bottom: 2px solid #f78166; font-weight: 600; }
+        .tab i { margin-right: 6px; opacity: 0.8; }
+        .section-title {
+            font-family: 'Long Cang', cursive; font-size: 28px; font-weight: 400;
+            color: #2e3b4e; margin-bottom: 16px; display: flex; align-items: center; gap: 8px;
+        }
+        .section-title i { color: #b87b94; font-size: 22px; }
+        .pinned-repos {
+            display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 18px; margin-bottom: 32px;
+        }
+        .repo-card {
+            background: #ffffffd9; backdrop-filter: blur(2px); border: 1px solid rgba(0,0,0,0.04);
+            border-radius: 18px; padding: 20px 18px; box-shadow: 0 6px 14px -6px rgba(0, 0, 0, 0.05);
+            transition: all 0.2s ease; border-bottom: 2px solid transparent;
+        }
+        .repo-card:hover { border-bottom-color: #e6b0c2; box-shadow: 0 18px 24px -12px rgba(180, 100, 130, 0.15); background: #ffffff; transform: translateY(-2px); }
+        .repo-header { display: flex; align-items: center; gap: 8px; margin-bottom: 8px; }
+        .repo-header i { color: #7f96aa; }
+        .repo-name { font-family: 'Caveat', cursive; font-size: 22px; font-weight: 600; color: #2b5f8a; }
+        .repo-visibility {
+            border: 1px solid #cfdbe8; border-radius: 20px; padding: 2px 10px;
+            font-size: 11px; color: #6b7f94; background: #f4f8fe; margin-left: 8px;
+        }
+        .repo-description { color: #4e6279; font-size: 14px; margin-bottom: 18px; min-height: 42px; }
+        .repo-meta { display: flex; align-items: center; gap: 16px; font-size: 13px; color: #6b7f94; }
+        .repo-language { display: flex; align-items: center; gap: 5px; }
+        .lang-dot { width: 12px; height: 12px; border-radius: 50%; background-color: #f1e05a; }
+        .lang-dot.python { background-color: #3572A5; }
+        .lang-dot.html { background-color: #e34c26; }
+        .lang-dot.cpp { background-color: #f34b7d; }
+        .contribution-section { margin-top: 20px; }
+        .contribution-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 14px; }
+        .contribution-graph {
+            background: #ffffffc2; backdrop-filter: blur(2px); border: 1px solid #eceff3;
+            border-radius: 20px; padding: 18px 16px; overflow-x: auto;
+            box-shadow: inset 0 2px 4px rgba(0,0,0,0.01);
+        }
+        .stats-grid {
+            display: grid; grid-template-columns: repeat(2, 1fr); gap: 12px; margin-top: 10px;
+        }
+        .stat-card {
+            background: #f8f3f5; border-radius: 16px; padding: 12px; text-align: center;
+        }
+        .stat-value { font-size: 24px; font-weight: 700; color: #b87b94; }
+        .stat-label { font-size: 13px; color: #6a7a8e; margin-top: 4px; }
+        .activity-card {
+            background: #ffffffd6; backdrop-filter: blur(2px); border-radius: 18px;
+            padding: 16px 20px; border: 1px solid #eceff3; margin-top: 24px;
+        }
+        .activity-item {
+            display: flex; gap: 14px; padding: 12px 0;
+            border-bottom: 1px dashed #e2e8f0;
+        }
+        .activity-item:last-child { border-bottom: none; }
+        .activity-item i { color: #b87b94; font-size: 16px; margin-top: 2px; }
+        .blog-card {
+            background: #ffffffd9; backdrop-filter: blur(2px); border-radius: 18px;
+            padding: 16px; margin-bottom: 12px; border: 1px solid #eceff3;
+            transition: all 0.2s;
+        }
+        .blog-card:hover { box-shadow: 0 8px 18px -6px rgba(0, 0, 0, 0.05); }
+        .blog-title { font-size: 16px; font-weight: 600; margin-bottom: 6px; }
+        .blog-meta { font-size: 12px; color: #6a7a8e; margin-top: 8px; }
+        .blog-summary { color: #4e6279; font-size: 13px; margin: 8px 0; }
+        .footer {
+            max-width: 1000px; width: 85%; margin: 20px auto 30px; padding: 24px 0 12px;
+            border-top: 1px dashed #d0d7de; display: flex; flex-wrap: wrap;
+            justify-content: space-between; align-items: center; color: #7a8b9c;
+            font-family: 'Caveat', cursive; font-size: 16px;
+        }
+        .footer-links { display: flex; gap: 20px; }
+        .loading-placeholder { text-align: center; padding: 20px; color: #8b9aab; }
+        .error-message { color: #d66e8e; background: #fff2f5; border-radius: 20px; padding: 12px; margin: 10px 0; }
+        blockquote {
+            border-left: 3px solid rgba(184, 123, 148, 0.7); padding: 12px 18px;
+            background: #fdf8fa; border-radius: 12px; margin: 16px 0; color: #3f5669; font-style: italic;
+        }
+        .oj-links { display: flex; gap: 8px; margin-top: 12px; flex-wrap: wrap; }
+        .oj-link {
+            background: #eef2f7; padding: 4px 12px; border-radius: 30px; font-size: 13px;
+            color: #4e6279; transition: all 0.2s;
+        }
+        .oj-link:hover { background: #d4a5b8; color: white; text-decoration: none; }
+        .oj-link i { margin-right: 4px; }
+        @media (max-width: 800px) {
+            .container { width: 92%; padding: 16px; flex-direction: column; }
+            .profile-sidebar { width: 100%; }
+            .avatar { width: 130px; height: 130px; }
+            .header-nav { display: none; }
+        }
+    </style>
+</head>
+<body>
+
+<header class="header">
+    <div class="header-left">
+        <i class="fab fa-github github-logo"></i>
+        <div class="header-nav">
+            <a href="#">探索</a>
+            <a href="#">项目</a>
+            <a href="#">星标</a>
+            <a href="#">关于</a>
+        </div>
+    </div>
+    <div class="header-right">
+        <div class="search-bar">
+            <i class="fas fa-search"></i>
+            <input type="text" placeholder="搜索或跳转…">
+            <i class="fas fa-slash"></i>
+        </div>
+        <div class="header-icons">
+            <i class="far fa-bell"></i>
+            <i class="fas fa-plus"></i>
+            <div class="avatar-small"><i class="fas fa-feather-alt"></i></div>
+        </div>
+    </div>
+</header>
+
+<div class="container">
+    <aside class="profile-sidebar">
+        <div class="profile-card">
+            <div class="avatar-wrapper">
+                <div class="avatar">
+                    <img src="https://cdn.luogu.com.cn/upload/image_hosting/6pa9bx57.png?x-oss-process=image/resize,m_lfit,h_170,w_225" alt="头像">
+                </div>
+            </div>
+            <div class="profile-name">徐逸非</div>
+            <div class="profile-login">@xuyifei0302</div>
+            <div class="profile-bio" id="user-bio">
+                🐇 一只不善于表达的兔兔<br>💻 信息学竞赛生
+            </div>
+            <a class="follow-button" href="https://github.com/xuyifei0302" target="_blank"><i class="fab fa-github"></i> GitHub 主页</a>
+            <div class="profile-details">
+                <div class="detail-item"><i class="fas fa-map-pin"></i> <span id="user-location">中国重庆</span></div>
+                <div class="detail-item"><i class="fas fa-building"></i> <span id="user-company">—</span></div>
+                <div class="detail-item"><i class="fas fa-link"></i> <a href="#" id="user-blog">—</a></div>
+            </div>
+            <div class="follow-stats">
+                <span><i class="fas fa-user-friends"></i> <strong id="user-followers">—</strong> 关注者</span>
+                <span>·</span>
+                <span><strong id="user-following">—</strong> 关注中</span>
+            </div>
+            <div class="oj-links">
+                <a href="https://www.luogu.com.cn/user/1170113" target="_blank" class="oj-link"><i class="fas fa-code"></i> 洛谷</a>
+                <a href="https://www.cnblogs.com/xuyifei0302" target="_blank" class="oj-link"><i class="fas fa-pen-nib"></i> 博客园</a>
+            </div>
+        </div>
+        <div class="org-section">
+            <div class="org-title">✨ 仓库统计</div>
+            <div style="font-size: 15px; margin-top: 8px;">📦 公开仓库: <strong id="public-repos-count">—</strong></div>
+        </div>
+        <div style="margin-top: 16px; color: #7f8fa3; font-size: 14px; font-family: 'Caveat';">
+            <i class="far fa-calendar-alt"></i> 加入于 2022-11-29
+        </div>
+    </aside>
+
+    <main class="main-content">
+        <div class="note-edit">
+            <i class="fas fa-sync-alt fa-spin" id="loading-spinner"></i> 
+            <span id="status-message">正在从各平台拉取实时数据...</span>
+        </div>
+
+        <div class="tabs">
+            <div class="tab active"><i class="fas fa-feather-alt"></i> 概览</div>
+            <div class="tab"><i class="fas fa-code-branch"></i> 仓库</div>
+            <div class="tab"><i class="fas fa-project-diagram"></i> 项目</div>
+            <div class="tab"><i class="far fa-star"></i> 星标</div>
+        </div>
+
+        <!-- 动态仓库区域 (GitHub) -->
+        <div class="section-title"><i class="fas fa-thumbtack"></i> 热门仓库 (按 star)</div>
+        <div class="pinned-repos" id="repos-container">
+            <div class="loading-placeholder">加载仓库中...</div>
+        </div>
+
+        <!-- 博客园最新文章 -->
+        <div class="contribution-section">
+            <div class="contribution-header">
+                <div class="section-title"><i class="fas fa-pencil-alt"></i> 博客园 · 最新随笔</div>
+                <a href="https://www.cnblogs.com/xuyifei0302" target="_blank" style="color:#7a8b9c;"><i class="fas fa-external-link-alt"></i> 博客园主页</a>
+            </div>
+            <div class="contribution-graph" id="cnblogs-container">
+                <div class="loading-placeholder">正在获取博客园文章...</div>
+            </div>
+        </div>
+
+        <!-- 洛谷练习数据 -->
+        <div class="contribution-section">
+            <div class="contribution-header">
+                <div class="section-title"><i class="fas fa-chart-line"></i> 洛谷练习数据</div>
+                <a href="https://www.luogu.com.cn/user/1170113" target="_blank" style="color:#7a8b9c;"><i class="fas fa-external-link-alt"></i> 洛谷主页</a>
+            </div>
+            <div class="contribution-graph" id="luogu-stats-container">
+                <div class="loading-placeholder">正在获取洛谷数据...</div>
+            </div>
+        </div>
+
+        <!-- GitHub 动态 -->
+        <div class="activity-card">
+            <div style="font-family: 'Long Cang'; font-size: 26px; margin-bottom: 8px;"><i class="far fa-newspaper"></i> GitHub 动态</div>
+            <div id="events-container">
+                <div class="loading-placeholder">加载动态中...</div>
+            </div>
+        </div>
+
+        <blockquote>「 即使是不善言辞的兔子，也有想要传达的算法之美。」 —— 逸非</blockquote>
+    </main>
+</div>
+
+<footer class="footer">
+    <div><i class="fab fa-github"></i> © 2026 徐逸非 · 数据实时获取自 GitHub & 洛谷 & 博客园</div>
+    <div class="footer-links"><a href="#">条款</a><a href="#">隐私</a><a href="#">安全</a></div>
+</footer>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.4/moment.min.js"></script>
+<script>
+    (function() {
+        const username = 'xuyifei0302';
+        const luoguUid = '1170113';
+        const statusEl = document.getElementById('status-message');
+        const spinner = document.getElementById('loading-spinner');
+
+        function setStatus(text, isError = false) {
+            statusEl.textContent = text;
+            spinner.classList.remove('fa-spin', 'fa-sync-alt');
+            if (isError) {
+                spinner.classList.add('fa-exclamation-triangle');
+                statusEl.style.color = '#d66e8e';
+            } else {
+                spinner.classList.add('fa-check-circle');
+                statusEl.style.color = '#4a9e4a';
+            }
+        }
+
+        // 获取 GitHub 用户信息
+        async function fetchGitHubUser() {
+            try {
+                const res = await fetch(`https://api.github.com/users/${username}`);
+                if (!res.ok) throw new Error(`用户信息获取失败 (${res.status})`);
+                const data = await res.json();
+                document.getElementById('user-bio').innerHTML = `🐇 一只不善于表达的兔兔<br>💻 ${data.bio || '信息学竞赛生'}`;
+                document.getElementById('user-location').textContent = data.location || '中国重庆';
+                document.getElementById('user-company').textContent = data.company || '—';
+                const blogLink = document.getElementById('user-blog');
+                if (data.blog) {
+                    blogLink.href = data.blog.startsWith('http') ? data.blog : 'https://' + data.blog;
+                    blogLink.textContent = data.blog.replace(/^https?:\/\//, '');
+                } else {
+                    blogLink.textContent = '—';
+                }
+                document.getElementById('user-followers').textContent = data.followers;
+                document.getElementById('user-following').textContent = data.following;
+                document.getElementById('public-repos-count').textContent = data.public_repos;
+            } catch (err) {
+                console.error(err);
+                setStatus('GitHub 用户信息加载失败', true);
+            }
+        }
+
+        // 获取 GitHub 仓库
+        async function fetchGitHubRepos() {
+            const container = document.getElementById('repos-container');
+            try {
+                const res = await fetch(`https://api.github.com/users/${username}/repos?sort=stars&per_page=100`);
+                if (!res.ok) throw new Error('仓库获取失败');
+                const repos = await res.json();
+                if (repos.length === 0) {
+                    container.innerHTML = '<div class="loading-placeholder">暂无公开仓库</div>';
+                    return;
+                }
+                const topRepos = repos.filter(r => !r.fork).slice(0, 4);
+                if (topRepos.length === 0) {
+                    container.innerHTML = '<div class="loading-placeholder">暂无原创仓库</div>';
+                    return;
+                }
+                container.innerHTML = '';
+                topRepos.forEach(repo => {
+                    const card = document.createElement('div'); card.className = 'repo-card';
+                    const lang = repo.language || 'Unknown';
+                    let langClass = '';
+                    if (lang === 'Python') langClass = 'python';
+                    else if (lang === 'HTML' || lang === 'CSS') langClass = 'html';
+                    else if (lang === 'C++') langClass = 'cpp';
+                    card.innerHTML = `
+                        <div class="repo-header">
+                            <i class="far fa-bookmark"></i>
+                            <a href="${repo.html_url}" target="_blank" class="repo-name">${repo.name}</a>
+                            <span class="repo-visibility">${repo.visibility || 'Public'}</span>
+                        </div>
+                        <div class="repo-description">${repo.description || '暂无描述'}</div>
+                        <div class="repo-meta">
+                            <span class="repo-language"><span class="lang-dot ${langClass}"></span> ${lang}</span>
+                            <span><i class="far fa-star"></i> ${repo.stargazers_count}</span>
+                            <span><i class="fas fa-code-branch"></i> ${repo.forks_count}</span>
+                        </div>
+                    `;
+                    container.appendChild(card);
+                });
+            } catch (err) {
+                container.innerHTML = '<div class="error-message">仓库加载失败，请刷新</div>';
+            }
+        }
+
+        // 获取 GitHub 事件
+        async function fetchGitHubEvents() {
+            const container = document.getElementById('events-container');
+            try {
+                const res = await fetch(`https://api.github.com/users/${username}/events?per_page=5`);
+                if (!res.ok) throw new Error('事件获取失败');
+                const events = await res.json();
+                if (events.length === 0) {
+                    container.innerHTML = '<div class="loading-placeholder">暂无近期动态</div>';
+                    return;
+                }
+                container.innerHTML = '';
+                events.slice(0, 5).forEach(event => {
+                    const item = document.createElement('div'); item.className = 'activity-item';
+                    let icon = 'fa-code', actionText = '';
+                    const repoName = event.repo.name;
+                    const repoUrl = `https://github.com/${repoName}`;
+                    switch(event.type) {
+                        case 'PushEvent':
+                            icon = 'fa-code-branch';
+                            actionText = `向 <a href="${repoUrl}" target="_blank">${repoName}</a> 推送了代码`;
+                            break;
+                        case 'CreateEvent':
+                            icon = 'fa-plus-circle';
+                            actionText = `创建了 ${event.payload.ref_type} ${event.payload.ref || ''} 于 <a href="${repoUrl}" target="_blank">${repoName}</a>`;
+                            break;
+                        case 'WatchEvent':
+                            icon = 'fa-star'; 
+                            actionText = `星标了 <a href="${repoUrl}" target="_blank">${repoName}</a>`;
+                            break;
+                        case 'ForkEvent':
+                            icon = 'fa-code-branch';
+                            actionText = `Fork 了 <a href="${repoUrl}" target="_blank">${repoName}</a>`;
+                            break;
+                        case 'IssuesEvent':
+                            icon = 'fa-exclamation-circle';
+                            actionText = `在 <a href="${repoUrl}" target="_blank">${repoName}</a> ${event.payload.action} issue`;
+                            break;
+                        default:
+                            icon = 'fa-history';
+                            actionText = `在 <a href="${repoUrl}" target="_blank">${repoName}</a> 有活动`;
+                    }
+                    const timeAgo = moment(event.created_at).fromNow();
+                    item.innerHTML = `<i class="fas ${icon}"></i><span><strong>${username}</strong> ${actionText} · ${timeAgo}</span>`;
+                    container.appendChild(item);
+                });
+            } catch (err) {
+                container.innerHTML = '<div class="error-message">动态加载失败</div>';
+            }
+        }
+
+        // 获取博客园文章 (通过 rss2json)
+        async function fetchCnblogsPosts() {
+            const container = document.getElementById('cnblogs-container');
+            try {
+                // 使用 rss2json 服务将 RSS 转为 JSON，避免跨域问题
+                const rssUrl = `https://www.cnblogs.com/xuyifei0302/rss`;
+                const apiUrl = `https://api.rss2json.com/v1/api.json?rss_url=${encodeURIComponent(rssUrl)}`;
+                const res = await fetch(apiUrl);
+                if (!res.ok) throw new Error('博客园RSS获取失败');
+                const data = await res.json();
+                if (data.status !== 'ok') throw new Error('RSS解析失败');
+                const items = data.items.slice(0, 5); // 取前5篇
+                if (items.length === 0) {
+                    container.innerHTML = '<div class="loading-placeholder">暂无文章</div>';
+                    return;
+                }
+                container.innerHTML = '';
+                items.forEach(item => {
+                    const card = document.createElement('div'); card.className = 'blog-card';
+                    // 提取摘要（去除HTML标签）
+                    const tempDiv = document.createElement('div');
+                    tempDiv.innerHTML = item.description || '';
+                    const summary = tempDiv.textContent.slice(0, 100) + '...';
+                    const pubDate = moment(item.pubDate).format('YYYY-MM-DD');
+                    card.innerHTML = `
+                        <div class="blog-title">
+                            <a href="${item.link}" target="_blank">${item.title}</a>
+                        </div>
+                        <div class="blog-summary">${summary}</div>
+                        <div class="blog-meta">
+                            <i class="far fa-calendar-alt"></i> ${pubDate} · 
+                            <i class="far fa-user"></i> ${data.feed.title || 'xuyifei0302'}
+                        </div>
+                    `;
+                    container.appendChild(card);
+                });
+                // 添加一个查看更多链接
+                const moreLink = document.createElement('div');
+                moreLink.style.marginTop = '12px';
+                moreLink.style.textAlign = 'right';
+                moreLink.innerHTML = `<a href="https://www.cnblogs.com/xuyifei0302" target="_blank">查看更多文章 <i class="fas fa-arrow-right"></i></a>`;
+                container.appendChild(moreLink);
+            } catch (err) {
+                console.error('博客园文章获取失败:', err);
+                container.innerHTML = `
+                    <div class="error-message">
+                        <i class="fas fa-exclamation-circle"></i> 博客园文章加载失败，请稍后刷新<br>
+                        <a href="https://www.cnblogs.com/xuyifei0302" target="_blank">直接访问博客园主页</a>
+                    </div>
+                `;
+            }
+        }
+
+        // 获取洛谷用户数据
+        async function fetchLuoguStats() {
+            const container = document.getElementById('luogu-stats-container');
+            try {
+                const proxyUrl = 'https://api.allorigins.win/raw?url=';
+                const targetUrl = `https://www.luogu.com.cn/user/${luoguUid}?_contentOnly=1`;
+                const res = await fetch(proxyUrl + encodeURIComponent(targetUrl));
+                if (!res.ok) throw new Error('洛谷数据获取失败');
+                const data = await res.json();
+                const user = data.currentData.user;
+                const submitCount = user.submittedProblemCount || 0;
+                const passedCount = user.passedProblemCount || 0;
+                const ranking = user.ranking || '—';
+                const rating = user.rating || '—';
+                const registerTime = user.registerTime ? new Date(user.registerTime * 1000).toLocaleDateString('zh-CN') : '—';
+                
+                container.innerHTML = `
+                    <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 12px;">
+                        <span><i class="fas fa-user-graduate"></i> <strong>${user.name || 'xuyifei0302'}</strong> · 等级分 ${rating}</span>
+                        <span style="color: #6a7a8e;"><i class="far fa-calendar"></i> 注册 ${registerTime}</span>
+                    </div>
+                    <div class="stats-grid">
+                        <div class="stat-card">
+                            <div class="stat-value">${submitCount}</div>
+                            <div class="stat-label">总提交</div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="stat-value">${passedCount}</div>
+                            <div class="stat-label">通过</div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="stat-value">${ranking}</div>
+                            <div class="stat-label">排名</div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="stat-value">${rating}</div>
+                            <div class="stat-label">等级分</div>
+                        </div>
+                    </div>
+                    <p style="margin-top: 12px; font-size: 13px; color: #6a7a8e; text-align: center;">
+                        🎯 通过率: ${submitCount ? ((passedCount / submitCount) * 100).toFixed(1) : '0'}% 
+                        · 咕值: ${user.ccfLevel || '—'}
+                    </p>
+                `;
+            } catch (err) {
+                console.error('洛谷数据获取失败:', err);
+                container.innerHTML = `
+                    <div style="text-align: center; padding: 20px;">
+                        <i class="fas fa-exclamation-circle" style="color: #d66e8e; font-size: 24px;"></i>
+                        <p style="margin-top: 8px;">洛谷数据获取失败，请稍后刷新</p>
+                        <a href="https://www.luogu.com.cn/user/${luoguUid}" target="_blank" style="display: inline-block; margin-top: 8px; color: #5c8ec6;">直接访问洛谷主页</a>
+                    </div>
+                `;
+            }
+        }
+
+        // 初始化所有数据
+        async function loadAll() {
+            setStatus('正在获取 GitHub 用户信息...');
+            await fetchGitHubUser();
+            setStatus('正在获取仓库列表...');
+            await fetchGitHubRepos();
+            setStatus('正在获取 GitHub 动态...');
+            await fetchGitHubEvents();
+            setStatus('正在获取博客园文章...');
+            await fetchCnblogsPosts();
+            setStatus('正在获取洛谷练习数据...');
+            await fetchLuoguStats();
+            setStatus('所有数据加载完成 ✨');
+        }
+
+        loadAll().catch(e => {
+            console.error(e);
+            setStatus('部分数据加载失败，可刷新重试', true);
+        });
+    })();
+</script>
+</body>
+</html>
